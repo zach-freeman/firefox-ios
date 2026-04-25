@@ -36,6 +36,7 @@ protocol SettingsSelectorsSet {
     var NAVIGATIONBAR: Selector { get }
     var CONNECT_SETTING: Selector { get }
     var TABLE: Selector { get }
+    var SEARCH_CELL: Selector { get }
 
     // Browsing
     var BROWSING_LINKS_SECTION: Selector { get }
@@ -84,6 +85,7 @@ struct SettingsSelectors: SettingsSelectorsSet {
         static let translationCellTitle = AccessibilityIdentifiers.Settings.Translation.title
         static let sendData = "settings.sendUsageData"
         static let sendCrashReports = "settings.sendCrashReports"
+        static let searchTitle = AccessibilityIdentifiers.Settings.Search.title
     }
 
     // Core Element Selector
@@ -223,6 +225,12 @@ struct SettingsSelectors: SettingsSelectorsSet {
 
     let TABLE = Selector.tableFirstMatch(
         description: "Main Settings table",
+        groups: ["settings"]
+    )
+
+    let SEARCH_CELL = Selector.cellById(
+        IDs.searchTitle,
+        description: "Search settings",
         groups: ["settings"]
     )
 

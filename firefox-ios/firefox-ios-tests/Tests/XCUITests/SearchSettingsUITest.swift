@@ -9,10 +9,16 @@ let defaultSearchEngine2 = "Bing"
 let customSearchEngine = ["name": "youtube", "url": "https://youtube.com/search?q=%s"]
 
 class SearchSettingsUITests: BaseTestCase {
+    private var settingScreen: SettingScreen!
+
+    override func setUp() async throws {
+        try await super.setUp()
+        settingScreen = SettingScreen(app: app)
+    }
+
     // https://mozilla.testrail.io/index.php?/cases/view/2435664
     func testDefaultSearchEngine() {
-        navigator.nowAt(NewTabScreen)
-        navigator.goto(SearchSettings)
+        openSearchSettings()
         // Check the default browser
         let defaultSearchEngine = app.tables.cells.element(boundBy: 0)
         mozWaitForElementToExist(app.tables.cells.staticTexts[defaultSearchEngine1])
@@ -26,8 +32,7 @@ class SearchSettingsUITests: BaseTestCase {
 
     // https://mozilla.testrail.io/index.php?/cases/view/2353247
     func testCustomSearchEngineIsEditable() {
-        navigator.nowAt(NewTabScreen)
-        navigator.goto(SearchSettings)
+        openSearchSettings()
         // Add a custom search engine
         addCustomSearchEngine()
         // Check that the custom search appears on the list
@@ -57,8 +62,7 @@ class SearchSettingsUITests: BaseTestCase {
 
     // https://mozilla.testrail.io/index.php?/cases/view/2353248
     func testCustomSearchEngineAsDefaultIsNotEditable() {
-        navigator.nowAt(NewTabScreen)
-        navigator.goto(SearchSettings)
+        openSearchSettings()
         // Edit is disabled
         XCTAssertFalse(app.buttons["Edit"].isEnabled)
 
@@ -77,8 +81,7 @@ class SearchSettingsUITests: BaseTestCase {
 
     // https://mozilla.testrail.io/index.php?/cases/view/2353249
     func testNavigateToSearchPickerTurnsOffEditing() {
-        navigator.nowAt(NewTabScreen)
-        navigator.goto(SearchSettings)
+        openSearchSettings()
         // Edit is disabled
         XCTAssertFalse(app.buttons["Edit"].isEnabled)
 
@@ -103,8 +106,7 @@ class SearchSettingsUITests: BaseTestCase {
 
     // https://mozilla.testrail.io/index.php?/cases/view/2353250
     func testDeletingLastCustomEngineExitsEditing() {
-        navigator.nowAt(NewTabScreen)
-        navigator.goto(SearchSettings)
+        openSearchSettings()
         // Edit is disabled
         XCTAssertFalse(app.buttons["Edit"].isEnabled)
         // Add a custom search engine
@@ -120,5 +122,10 @@ class SearchSettingsUITests: BaseTestCase {
         }
         tablesQuery.buttons[AccessibilityIdentifiers.Settings.Search.deleteButton].waitAndTap()
         XCTAssertFalse(app.buttons["Edit"].isEnabled)
+    }
+
+    func openSearchSettings() {
+        navigator.goto(SettingsScreen)
+        settingScreen.navigateToSearchSettings()
     }
 }

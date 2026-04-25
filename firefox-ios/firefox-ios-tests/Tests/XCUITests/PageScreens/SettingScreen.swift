@@ -108,6 +108,12 @@ final class SettingScreen {
         sel.NAVIGATIONBAR.element(in: app).waitAndTap()
     }
 
+    func navigateToSearchSettings() {
+        let cell = sel.SEARCH_CELL.element(in: app)
+        BaseTestCase().mozWaitForElementToExist(cell)
+        cell.waitAndTap()
+    }
+
     func connectSettingSwipeUp() {
         let connectSetting = sel.CONNECT_SETTING.element(in: app)
         BaseTestCase().mozWaitForElementToExist(connectSetting)
